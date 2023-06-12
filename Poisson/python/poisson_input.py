@@ -23,7 +23,7 @@ if __name__ == "__main__":
     avg_dist = np.mean(distances)
     radius = 2*avg_dist   
     radii = [radius * 2]
-    recMeshBPA = o3d.geometry.TriangleMesh.create_from_point_cloud_ball_pivoting(
+    recMeshBPA = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
             ptCloud, o3d.utility.DoubleVector(radii))
     
     # Save the mesh to a ply file
