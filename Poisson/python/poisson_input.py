@@ -17,20 +17,15 @@ if __name__ == "__main__":
 
     # Orientation of normal vector is consistent with tangent plane 
     ptCloud.orient_normals_consistent_tangent_plane(10)
-       
-    # Surface reconstruction by ball pivoting algorithm
-    distances = ptCloud.compute_nearest_neighbor_distance()
-    avg_dist = np.mean(distances)
-    radius = 2*avg_dist   
-    radii = [radius * 2]
-    recMeshBPA = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
-            ptCloud, o3d.utility.DoubleVector(radii))
-    
+
+    # Surface reconstruction using Poisson reconstruction
+    poisson_mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(ptCloud, depth=9)[0]
+
     # Save the mesh to a ply file
     output_path = "mesh.ply"
     if len(sys.argv) >= 3:
         output_path = sys.argv[2]
-    o3d.io.write_triangle_mesh(output_path, recMeshBPA)
+    o3d.io.write_triangle_mesh(output_path, poisson_mesh)
     
     print(f"Mesh saved to '{output_path}'")
 
